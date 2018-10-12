@@ -1,0 +1,41 @@
+#导入 导出
+impdp system/000000@helowin  directory=DATA_TEMP dumpfile=BPM.EXPDP logfile=BPM_20180124.log REMAP_SCHEMA=test01:test01 schemas=test01
+expdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181012.dmp schemas=hd,front,etp,dbcenter logfile=XHD20181012.log
+
+/usr/local/data_temp:/home/oracle/data_temp/
+
+#docker 仓库
+ docker run -d -v /usr/local/registry:/var/lib/registry -p 5000:5000 --restart=always --privileged=true --name registry registry:latest
+
+docker tag helowin/oracle_11g:v2  localhost:5000/xhd/oracle_11g:v181012
+
+docker push localhost:5000/xhd/oracle_11g
+
+curl http://192.168.0.178:5000/v2/_catalog
+curl http://192.168.0.178:5000/v2/xhd/oracle_11g/tags/list
+
+ { "insecure-registries":["192.168.0.178:5000"]} /etc/docker/daemon.json
+
+ conn hd/000000@helowin as sysoper
+
+#docker-oracle 
+/home/oracle/app/oracle/flash_recovery_area/helowin/control02.ctl
+/home/oracle/app/oracle/oradata/helowin/control01.ctl
+
+ SID_LIST_LISTENER =  
+(SID_LIST =  
+  (SID_DESC =  
+  (GLOBAL_DBNAME = helowin)
+  (SID_NAME = helowin)
+  )
+)
+
+
+(SID_DESC =
+	(GLOBAL_DBNAME = helowin)
+	(ORACLE_HOME = /home/oracle/app/oracle/product/11.2.0/dbhome_2)
+	(SID_NAME = helowin)
+)
+
+
+(UR=A)
