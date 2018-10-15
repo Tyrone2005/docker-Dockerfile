@@ -1,5 +1,3 @@
-#!/bin/bash
-# ./user.sh oracle /u01/app/oracle/data_01.dbf /u01/app/oracle/index_01.dbf
  
 sqlplus -s system/helowin <<EOF
  alter user system identified by 000000;
@@ -123,3 +121,8 @@ ALTER DATABASE DATAFILE '/home/oracle/app/oracle/oradata/helowin/FRONT.DBF' AUTO
 ALTER DATABASE DATAFILE '/home/oracle/app/oracle/oradata/helowin/DBCENTER.DBF' AUTOEXTEND ON NEXT 1G MAXSIZE 10G;
 ALTER DATABASE DATAFILE '/home/oracle/app/oracle/oradata/helowin/HD.DBF' AUTOEXTEND ON NEXT 1G MAXSIZE 10G;
 EOF
+
+
+#groupadd oinstall
+#useradd -g oinstall oracle
+#chown oracle:oinstall create_ns.sh
