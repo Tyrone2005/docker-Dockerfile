@@ -1,6 +1,6 @@
 #导入 导出
-impdp system/000000@helowin  directory=DATA_TEMP dumpfile=BPM.EXPDP logfile=BPM_20180124.log REMAP_SCHEMA=test01:test01 schemas=test01
-expdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181012.dmp schemas=hd,front,etp,dbcenter logfile=XHD20181012.log
+impdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181015.dmp logfile=XHD20181015.log 
+expdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181015.dmp schemas=hd,front,etp,dbcenter logfile=XHD20181015.log
 
 /usr/local/data_temp:/home/oracle/data_temp/
 
@@ -39,3 +39,25 @@ curl http://192.168.0.178:5000/v2/xhd/oracle_11g/tags/list
 
 
 (UR=A)
+
+
+#清理
+docker system df
+
+docker rmi (docker images | grep "^<none>" | awk "{print(docker images | grep "^<none>" | awk "{print3}”) 
+
+docker volume rm $(docker volume ls -qf dangling=true)
+
+
+
+
+#启动数据库
+docker run -d --name oracle11g -p 1521:1521 -v /usr/local/data_temp:/home/oracle/data_temp 823837ebb4d9
+
+expdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181016_backup.dmp schemas=hd,front,etp,dbcenter logfile=XHD20181016.log
+
+
+
+
+docker run -d --name oracle11g_TG -p 1522:1521 -v /usr/local/data_temp:/home/oracle/data_temp e07082eef364
+docker run -d --name oracle11g_DG -p 1523:1521 -v /usr/local/data_temp:/home/oracle/data_temp e07082eef364

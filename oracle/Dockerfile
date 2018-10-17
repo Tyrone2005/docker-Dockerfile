@@ -1,27 +1,25 @@
+
 # Docker for CentOS 7
 
 #Base image
-FROM oracle_11g:v1
+FROM oracle11g:v1
 
 #Who
 MAINTAINER Tyrone "Tyrone_2013@hotmail.com"
 
+ENV PATH=$PATH:$HOME/bin:/sbin:/usr/bin:/usr/sbin
+ENV CREATE_USER_FILE="create_ns.sh"
+ENV DMP_FILE="XHD20181015.dmp"
 
-#设置环境变量
-ENV ORACLE_HOME=/home/oracle/app/oracle/product/11.2.0/dbhome_2
-ENV ORACLE_SID=helowin
-ENV PATH=$ORACLE_HOME/bin:$PATH
+COPY ./${DMP_FILE} /tmp/${DMP_FILE}
+COPY ./${CREATE_USER_FILE} /tmp/${CREATE_USER_FILE}
+WORKDIR /tmp/
 
-#创建软连接
-RUN su 
-RUN ln -s $ORACLE_HOME/bin/sqlplus /usr/bin
-RUN su - oralce
 #开启内部服务端口
 EXPOSE 1521
 
 
-RUN sqlplus /nolog
-RUN conn /as sysdba
-RUN alter user system identified by 000000;
-RUN alter user sys identified by 000000;
-RUN ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;
+
+#在宿主机上运行
+#mkdir /usr/local/data_temp
+#chown -R 500.500 /usr/local/data_temp
