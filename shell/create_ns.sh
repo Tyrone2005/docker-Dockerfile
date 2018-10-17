@@ -1,8 +1,10 @@
- 
+
+
 sqlplus -s system/helowin <<EOF
  alter user system identified by 000000;
  alter user sys identified by 000000;
  ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;
+ create or replace directory DATA_TEMP as '/home/oracle/data_temp';
 CREATE SMALLFILE 
     TABLESPACE "HD" 
     LOGGING 
@@ -122,6 +124,8 @@ ALTER DATABASE DATAFILE '/home/oracle/app/oracle/oradata/helowin/DBCENTER.DBF' A
 ALTER DATABASE DATAFILE '/home/oracle/app/oracle/oradata/helowin/HD.DBF' AUTOEXTEND ON NEXT 1G MAXSIZE 10G;
 EOF
 
+cp /tmp/XHD20181015.dmp /home/oracle/data_temp/
+impdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181015.dmp logfile=XHD20181015.log 
 
 #groupadd oinstall
 #useradd -g oinstall oracle
