@@ -61,3 +61,12 @@ expdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181016_backup.dmp
 
 docker run -d --name oracle11g_TG -p 1522:1521 -v /usr/local/data_temp:/home/oracle/data_temp e07082eef364
 docker run -d --name oracle11g_DG -p 1523:1521 -v /usr/local/data_temp:/home/oracle/data_temp e07082eef364
+
+/usr/local/tomcat/apache-tomcat-8.0.50/webapps
+
+
+docker run --name tomcat_tg --net=Test --network-alias tomcat -it  -p 8080:8080   -v /usr/local/webapp:/usr/local/tomcat/apache-tomcat-8.0.50/webapps da28e4e3becc
+docker run -d --name oracle11g_TG --net=Test -p 1521:1521 --network-alias db -v /usr/local/data_temp:/home/oracle/data_temp e07082eef364
+
+docker run --name tomcat_dg --net=Dev --network-alias tomcat -it  -p 8081:8080   -v /usr/local/webapp:/usr/local/tomcat/apache-tomcat-8.0.50/webapps da28e4e3becc
+docker run -d --name oracle11g_DG --net=Dev -p 1522:1521 --network-alias db -v /usr/local/data_temp:/home/oracle/data_temp e07082eef364
