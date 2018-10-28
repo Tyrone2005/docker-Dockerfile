@@ -1,5 +1,3 @@
-
-
 sqlplus -s system/helowin <<EOF
  alter user system identified by 000000;
  alter user sys identified by 000000;
@@ -124,8 +122,8 @@ ALTER DATABASE DATAFILE '/home/oracle/app/oracle/oradata/helowin/DBCENTER.DBF' A
 ALTER DATABASE DATAFILE '/home/oracle/app/oracle/oradata/helowin/HD.DBF' AUTOEXTEND ON NEXT 1G MAXSIZE 10G;
 EOF
 
-cp /tmp/XHD20181015.dmp /home/oracle/data_temp/
-impdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181015.dmp logfile=XHD20181015.log 
+cp /tmp/XHD20181022.dmp /home/oracle/data_temp/
+impdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181022.dmp logfile=XHD20181022.log
 
 #groupadd oinstall
 #useradd -g oinstall oracle

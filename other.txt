@@ -57,7 +57,7 @@ docker run -d --name oracle11g -p 1521:1521 -v /usr/local/data_temp:/home/oracle
 expdp system/000000@helowin  directory=DATA_TEMP dumpfile=XHD20181016_backup.dmp schemas=hd,front,etp,dbcenter logfile=XHD20181016.log
 
 
-
+export NLS_LANG="SIMPLIFIED Chinese_CHINA.ZHS16GBK"
 
 docker run -d --name oracle11g_TG -p 1522:1521 -v /usr/local/data_temp:/home/oracle/data_temp e07082eef364
 docker run -d --name oracle11g_DG -p 1523:1521 -v /usr/local/data_temp:/home/oracle/data_temp e07082eef364

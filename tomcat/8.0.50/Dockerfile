@@ -24,6 +24,7 @@ ADD ./apache-tomcat-8.0.50.tar.gz /usr/local/tomcat
 ENV JAVA_HOME /opt/jdk/jdk1.8.0_181
 ENV CATALINA_HOME /usr/local/tomcat/apache-tomcat-8.0.50
 ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin
+ENV LANG en_ZW.utf8
 
 #打包项目并拷贝到tomcat webapps目录
 RUN mkdir /usr/local/tomcat/webapp

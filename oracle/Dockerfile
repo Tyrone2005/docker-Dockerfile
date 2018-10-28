@@ -7,13 +7,13 @@ FROM oracle11g:v1
 #Who
 MAINTAINER Tyrone "Tyrone_2013@hotmail.com"
 
-ENV ORACLE_HOME=/home/oracle/app/oracle/product/11.2.0/dbhome_2 \
- ORACLE_SID=helowin \
- PATH=$ORACLE_HOME/bin:$PATH \
- PATH=$PATH:$HOME/bin:/sbin:/usr/bin:/usr/sbin \
- CREATE_USER_FILE="create_ns.sh" \
- DMP_FILE="XHD20181015.dmp" 
-
+ENV ORACLE_HOME=/home/oracle/app/oracle/product/11.2.0/dbhome_2
+ENV ORACLE_SID=helowin
+ENV PATH=$ORACLE_HOME/bin:$PATH
+ENV PATH=$PATH:$HOME/bin:/sbin:/usr/bin:/usr/sbin
+ENV CREATE_USER_FILE="create_ns.sh"
+ENV DMP_FILE="XHD20181015.dmp"
+ENV LANG zh_CN.utf8
 COPY ./${DMP_FILE} /tmp/${DMP_FILE}
 COPY ./${CREATE_USER_FILE} /tmp/${CREATE_USER_FILE}
 WORKDIR /tmp/
