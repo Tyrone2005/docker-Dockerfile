@@ -46,6 +46,8 @@ isSuccess "修改复制默认提示覆盖的别名设置"
 
 #获取当前主机IP，存入变量
 local_ip=`ifconfig -a|grep -o -e 'inet [0-9]\{1,3\}.[0-9]\{1,3\}.[0-9]\{1,3\}.[0-9]\{1,3\}'|grep -v "127.0.0"|grep -v "172.17.0"|awk '{print $2}'`
+#redhat6.5
+#local_ip=`ip addr|grep -o -e 'inet [0-9]\{1,3\}.[0-9]\{1,3\}.[0-9]\{1,3\}.[0-9]\{1,3\}'|grep -v "127.0.0"|grep -v "172.17.0"|awk '{print $2}'`
 log info "本机IP为：${local_ip}"
 filearray=(FastDFS_v5.05.tar.gz apache-tomcat-7.0.47.tar.gz fastdfs-nginx-module_v1.16.tar.gz libfastcommon-master.zip nginx-1.6.2.tar.gz nginx-1.6.2.tar.gz WTS.jpg nginx.conf)
 #判断准备的文件是否存在，准备文件
@@ -83,6 +85,10 @@ fi
 #关闭防火墙，不然NGINX访问不到
 log warn "正在关闭防火墙"
 systemctl stop firewalld.service
+
+#redhat6.5  
+#service iptables stop
+
 isSuccess "关闭防火墙" | log info
 
 
