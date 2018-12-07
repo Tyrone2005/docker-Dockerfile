@@ -159,7 +159,10 @@ function checkSqfwptInfo(ids) {
 /**
  * 提交功能是将数据变成临时数据变成正式数据，并将审核状态置为待审核
  * */
-function submitInfo(id){}
+function submitInfo(id){
+	
+	$("#fhrtlist").jqGrid('setGridParam', {postData：'"pguid":pguid'}).trigger("reloadGrid");
+}
 /**
  * 列表数据初始化
  */
@@ -450,4 +453,141 @@ if (!Array.prototype.forEach) {
             k++;  
         }  
     };  
+	
+	
+	$("#fhrtlist").jqGrid('setGridParam', {postData：'"pguid":pguid'}).trigger("reloadGrid");
+	
+	prmNames是jqGrid的一个重要选项，用于设置jqGrid将要向Server传递的参数名称。其默认值为：
+
+prmNames : {
+
+page:"page", // 表示请求页码的参数名称
+
+rows:"rows", // 表示请求行数的参数名称
+
+sort: "sidx", // 表示用于排序的列名的参数名称
+
+order: "sord", // 表示采用的排序方式的参数名称
+
+search:"_search", // 表示是否是搜索请求的参数名称
+
+nd:"nd", // 表示已经发送请求的次数的参数名称
+
+id:"id", // 表示当在编辑数据模块中发送数据时，使用的id的名称
+
+oper:"oper", // operation参数名称
+
+editoper:"edit", // 当在edit模式中提交数据时，操作的名称
+
+addoper:"add", // 当在add模式中提交数据时，操作的名称
+
+deloper:"del", // 当在delete模式中提交数据时，操作的名称
+
+subgridid:"id", // 当点击以载入数据到子表时，传递的数据名称
+
+npage: null,
+
+totalrows:"totalrows" // 表示需从Server得到总共多少行数据的参数名称，参见jqGrid选项中的rowTotal
+
+}
+
+2.2 jsonReader选项
+
+jsonReader是jqGrid的一个重要选项，用于设置如何解析从Server端发回来的json数据，如果Server返回的是xml数据，则对应的使用xmlReader来解析。jsonReader的默认值为：
+
+jsonReader : {
+
+root: "rows", // json中代表实际模型数据的入口
+
+page: "page", // json中代表当前页码的数据
+
+total: "total", // json中代表页码总数的数据
+
+records: "records", // json中代表数据行总数的数据
+
+repeatitems: true, // 如果设为false，则jqGrid在解析json时，会根据name来搜索对应的数据元素（即可以json中元素可以不按顺序）；而所使用的name是来自于colModel中的name设定。
+
+cell: "cell",
+
+id: "id",
+
+userdata: "userdata",
+
+subgrid: {
+
+root:"rows",
+
+repeatitems: true,
+
+cell:"cell"
+
+}
+
+}
+2.3 colModel的重要选项
+
+colModel也有许多非常重要的选项，在使用搜索、排序等方面都会用到。这里先只说说最基本的。
+
+name ：为Grid中的每个列设置唯一的名称，这是一个必需选项，其中保留字包括subgrid、cb、rn。
+index ：设置排序时所使用的索引名称，这个index名称会作为sidx参数（prmNames中设置的）传递到Server。
+label ：当jqGrid的colNames选项数组为空时，为各列指定题头。如果colNames和此项都为空时，则name选项值会成为题头。
+width ：设置列的宽度，目前只能接受以px为单位的数值，默认为150。
+sortable ：设置该列是否可以排序，默认为true。
+search ：设置该列是否可以被列为搜索条件，默认为true。
+resizable ：设置列是否可以变更尺寸，默认为true。
+hidden ：设置此列初始化时是否为隐藏状态，默认为false。
+formatter ：预设类型或用来格式化该列的自定义函数名。常用预设格式有：integer、date、currency、number等（具体参见文档 ）
+
+三、 注意事项
+
+1. 动态改变Add Form或者Edit Form中的select的内容，如：改变下图中的Comparator下拉中的内容。
+
+clip_image002
+
+$("#list_d").navGrid('#pager_d',{add:true,edit:true,del:true,search:false,refresh:false},
+
+{
+
+checkOnSubmit:false, closeAfterEdit: true,recreateForm:true,
+
+beforeInitData:function(formid){
+
+initComparator();
+
+},
+
+beforeShowForm: function(formid){
+
+$("#list_d").jqGrid('setColProp', 'Name', { editrules:{required:false},});
+
+$('#tr_Name', formid).hide();
+
+}
+
+}，//edit
+
+{},//add
+
+{}//del
+
+）
+
+beforeInitData, beforeShowForm在每次点击编辑的时候都会执行。initComparator的作用是通过ajax获取数据，然后利用$("#list_d").jqGrid('setColProp', 'Comparator', { editoptions: { value: valueString} });来设置Comparator下拉中的内容。其中valueString的格式如下’ equal to: equal to; not equal to: not equal to’。键值之间用冒号隔开，2项之间用分号隔开。注意：把recreateForm设为true，否则'setColProp'只在第一次调用时有效。
+
+2. var rowNum = parseInt($(this).getGridParam("records"), 10); 得到数据条数。
+
+3. jQuery("#list_d").clearGridData();清空数据。
+
+4. jQuery("#list").getCell(ids,"Key");获取第ids行的key列。
+
+5. $("#list").jqGrid('setSelection', "1");选中第一行。放在loadComplete：中在gird加载完成的时候自动选中第一行。loadComplete:function(data){$("#list").jqGrid('setSelection', "1");
+
+}
+
+6. 对于像1中的可编辑的字段，可以设定rule，参见http://www.trirand.com/jqgridwiki/doku.php?id=wiki:common_rules#editrules
+
+7. 修改Option，以URL为例
+
+jQuery("#list_d").jqGrid('setGridParam',{url:"xxx.aspx",page:1}).trigger('reloadGrid');
+
 }  
