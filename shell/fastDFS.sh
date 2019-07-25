@@ -220,7 +220,7 @@ sed -i '/^connect_timeout=/c connect_timeout=10' mod_fastdfs.conf
 isSuccess "修改mod_fastdfs1"
 sed -i "/^tracker_server=/c tracker_server=${local_ip}:22122" mod_fastdfs.conf
 isSuccess "修改mod_fastdfs2"
-#注意：文件中此行等号前有空格，许特殊处理
+#注意：文件中此行等号前有空格，需要特殊处理
 sed -i '/^url_have_group_name[[:space:]]=/c url_have_group_name=true '  /etc/fdfs/mod_fastdfs.conf
 #sed -i '/^url_have_group_name=/c url_have_group_name=true' mod_fastdfs.conf
 isSuccess "修改mod_fastdfs3"
